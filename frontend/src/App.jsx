@@ -1,17 +1,47 @@
-import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Sign from './pages/Sign';
 import Home from './pages/Home';
+import Register from './pages/Register.jsx';
+import Login from './pages/Login.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './utils/ProtectedRoute.jsx';
+import NotFound from './pages/NotFound.jsx';
+import Layout from './utils/Layout.jsx';
 
 function App() {
     return (
         <Router>
-            <Navbar />
-            <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/sign' element={<Sign />} />
-            </Routes>
+            <AuthProvider>
+                <Routes>
+                    <Route element={<Layout />}>
+                        <Route
+                            path='/'
+                            element={
+                                <ProtectedRoute>
+                                    <Home />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path='/register'
+                            element={
+                                <ProtectedRoute guestOnly>
+                                    <Register />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path='/login'
+                            element={
+                                <ProtectedRoute guestOnly>
+                                    <Login />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Route>
+
+                    <Route path='*' element={<NotFound />} />
+                </Routes>
+            </AuthProvider>
         </Router>
     );
 }

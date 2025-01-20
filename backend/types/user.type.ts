@@ -1,8 +1,10 @@
+import { Document } from "mongoose";
 import { Region } from "./regions.type.ts";
 
 export interface IUser extends Document {
+  firstName: string;
+  lastName: string;
   email: string;
-  name: string;
-  isPremium: boolean;
+  password: string;
   regions: Region[];
 }

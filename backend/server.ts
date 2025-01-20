@@ -8,7 +8,13 @@ import { MONGO_URI, PORT } from './utils/const.utility.ts';
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: "GET, POST, PUT, DELETE",
+  allowedHeaders: "Content-Type, Authorization"
+}));
+// app.options('*', cors());
+
 app.use(express.json({ limit: '1mb' })); // 1MB limit for the entire JSON body
 
 // Routes

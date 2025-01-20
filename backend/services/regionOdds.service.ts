@@ -1,6 +1,8 @@
-import { OddsData } from '../types/oddsData.types';
-import { Region } from '../types/regionsEnum';
-import { ODDS_API_URL } from '../utils/const.utility';
+import { OddsData } from '../types/odds.type';
+import { Region } from '../types/regions.type';
+import { ODDS_API_KEY } from '../utils/const.utility';
+
+const ODDS_API_URL = 'https://api.the-odds-api.com/v4/sports/upcoming/odds/'
 
 export class RegionOdds {
     private fetchedAt: Date;
@@ -12,7 +14,8 @@ export class RegionOdds {
         if (this.fetchedAt && Date.now() - this.fetchedAt.getTime() < 2 * 60 * 60 * 1000) return this.data;
 
         const url = new URL(ODDS_API_URL);
-        url.search = new URLSearchParams({ regions: this.region }).toString();
+        url.search = new URLSearchParams({ regions: this.region, apiKey: ODDS_API_KEY }).toString();
+
         const res = await fetch(url);
 
         if (!res.ok) {

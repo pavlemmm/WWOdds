@@ -1,7 +1,17 @@
 import mongoose from 'mongoose';
 import { Region } from '../types/regions.type';
+import { IUser } from '../types/user.type';
 
-const userSchema = new mongoose.Schema({
+
+const userSchema = new mongoose.Schema<IUser>({
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
@@ -16,10 +26,6 @@ const userSchema = new mongoose.Schema({
     type: [String],
     enum: Object.values(Region),
     default: [],
-  },
-  isPremium: {
-    type: Boolean,
-    default: false,
   },
 });
 

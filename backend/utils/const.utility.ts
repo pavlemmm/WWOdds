@@ -29,4 +29,4 @@ if (!process.env.MONGO_URI) {
 export const MONGO_URI = process.env.MONGO_URI;
 
 
-export const ODDS_API_URL = `api.the-odds-api.com/v4/sports/upcoming/odds/?apiKey=${ODDS_API_KEY}`
+export const ODDS_API_URL = `https://api.the-odds-api.com/v4/sports/upcoming/odds/?apiKey=${ODDS_API_KEY}`

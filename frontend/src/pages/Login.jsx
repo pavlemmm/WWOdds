@@ -69,7 +69,7 @@ function Login() {
 
     return (
         <div className='flex-grow flex items-center justify-center'>
-            <form onSubmit={handleLogin} className='w-1/2 rounded border bg-gray-800 border-gray-700 px-3 pt-7 pb-5'>
+            <form onSubmit={handleLogin} className='w-1/2 max-md:w-full rounded border bg-gray-800 border-gray-700 px-3 pt-7 pb-5 mx-2'>
                 <h2 className='text-xl mb-7 border-b pb-2 border-gray-700'>Login</h2>
                 <InputText
                     type='email'

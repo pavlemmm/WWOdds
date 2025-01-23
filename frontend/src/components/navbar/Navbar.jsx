@@ -10,10 +10,10 @@ function Navbar() {
     }
 
     return (
-        <nav className='shadow-xl bg-gray-400 dark:bg-gray-700'>
+        <nav className='shadow-xl bg-gray-400 dark:bg-gray-800'>
             <div className='flex justify-between items-center container mx-auto'>
-                <h1 className='px-5'>
-                    <a href='/'>LOGO</a>
+                <h1 className='px-5 font-bold'>
+                    <a href='/'>WWOdds</a>
                 </h1>
                 <ul className='flex'>
                     {user ? (
@@ -27,9 +27,6 @@ function Navbar() {
                         </>
                     ) : (
                         <>
-                            <a href='/'>
-                                <NavLink>Home</NavLink>
-                            </a>
                             <a href='/login'>
                                 <NavLink>Login</NavLink>
                             </a>

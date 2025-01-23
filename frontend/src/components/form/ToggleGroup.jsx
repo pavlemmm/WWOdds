@@ -7,8 +7,8 @@ const ToggleGroup = ({ options, selected, onChange, className }) => {
                     type="button"
                     onClick={() => onChange(option)}
                     className={`${
-                        selected.indexOf(option) != -1 ? 'bg-orange-900 border-orange-500' : 'dark:bg-gray-700 dark:border-gray-600'
-                    } px-4 py-3 border rounded hover:bg-orange-800 hover:border-orange-400 font-medium transition border-gray-300`}
+                        selected.indexOf(option) != -1 ? 'bg-slate-500 border-slate-200' : 'dark:bg-gray-700 dark:border-gray-600'
+                    } px-4 py-3 border rounded hover:bg-gray-500 hover:border-gray-400 font-medium transition border-gray-300`}
                 >
                     {options[option]}
                 </button>

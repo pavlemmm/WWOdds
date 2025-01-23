@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import InputText from '../components/form/InputText';
 import ToggleGroup from '../components/form/ToggleGroup';
 import Button from '../components/Button';
@@ -107,73 +108,83 @@ function Register() {
     };
 
     return (
-        <form onSubmit={handleRegister} className='m-auto mt-10 w-1/2 rounded border px-3 py-5'>
-            <div className='flex gap-4'>
-                <div className='flex-1'>
-                    <InputText
-                        id='firstname'
-                        placeholder='John'
-                        title='First Name:'
-                        required
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
-                    />
-                    <p className='text-red-500 mb-5 text-sm'>{errors.firstName}</p>
+        <div className='flex-grow flex items-center justify-center'>
+            <form onSubmit={handleRegister} className='w-1/2 rounded border bg-gray-800 border-gray-700 px-3 pt-7 pb-5'>
+                <h2 className='text-xl mb-7 border-b pb-2 border-gray-700'>Register</h2>
+                <div className='flex gap-4'>
+                    <div className='flex-1'>
+                        <InputText
+                            id='firstname'
+                            placeholder='John'
+                            title='First Name:'
+                            required
+                            value={firstName}
+                            onChange={e => setFirstName(e.target.value)}
+                        />
+                        <p className='text-red-500 mb-5 text-sm'>{errors.firstName}</p>
+                    </div>
+                    <div className='flex-1'>
+                        <InputText
+                            id='lastname'
+                            placeholder='Parker'
+                            title='Last Name:'
+                            required
+                            value={lastName}
+                            onChange={e => setLastName(e.target.value)}
+                        />
+                        <p className='text-red-500 mb-5 text-sm'>{errors.lastName}</p>
+                    </div>
                 </div>
-                <div className='flex-1'>
-                    <InputText
-                        id='lastname'
-                        placeholder='Parker'
-                        title='Last Name:'
-                        required
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
-                    />
-                    <p className='text-red-500 mb-5 text-sm'>{errors.lastName}</p>
-                </div>
-            </div>
-            <InputText
-                type='email'
-                id='email'
-                placeholder='example@gmail.com'
-                title='Email:'
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className='mb-2'
-            />
-            <p className='text-red-500 mb-5 text-sm'>{errors.email}</p>
-            <InputText
-                type='password'
-                id='password'
-                placeholder='********'
-                title='Password:'
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className='mb-2'
-            />
-            <p className='text-red-500 mb-5 text-sm'>{errors.password}</p>
-            <InputText
-                type='password'
-                id='confirm-password'
-                placeholder='********'
-                title='Confirm Password:'
-                required
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                className='mb-2'
-            />
-            <p className='text-red-500 mb-8 text-sm'>{errors.confirmPassword}</p>
-
-            <p className='text-sm font-medium text-gray-900 dark:text-white mb-1'>Select Regions: </p>
-            <ToggleGroup options={regionValues} selected={regions} onChange={handleRegionsChange} className='mb-8' />
-
-            <p className='text-red-500 mb-5 text-sm'>{errors.form}</p>
-            <Button type='submit' className='block mx-auto'>
-                Register
-            </Button>
-        </form>
+                <InputText
+                    type='email'
+                    id='email'
+                    placeholder='example@gmail.com'
+                    title='Email:'
+                    required
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    className='mb-2'
+                />
+                <p className='text-red-500 mb-5 text-sm'>{errors.email}</p>
+                <InputText
+                    type='password'
+                    id='password'
+                    placeholder='********'
+                    title='Password:'
+                    required
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    className='mb-2'
+                />
+                <p className='text-red-500 mb-5 text-sm'>{errors.password}</p>
+                <InputText
+                    type='password'
+                    id='confirm-password'
+                    placeholder='********'
+                    title='Confirm Password:'
+                    required
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    className='mb-2'
+                />
+                <p className='text-red-500 mb-8 text-sm'>{errors.confirmPassword}</p>
+                <p className='text-sm font-medium text-gray-900 dark:text-white mb-1'>Select Regions: </p>
+                <ToggleGroup
+                    options={regionValues}
+                    selected={regions}
+                    onChange={handleRegionsChange}
+                    className='mb-8'
+                />
+                <p className='text-red-500 mb-5 text-sm'>{errors.form}</p>
+                Already have an accounut?{' '}
+                <Link to='/login' className='underline text-blue-400'>
+                    Login
+                </Link> now.
+                <Button type='submit' className='block mx-auto'>
+                    Register
+                </Button>
+            </form>
+        </div>
     );
 }
 

@@ -1,25 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 function Home() {
     const { user } = useAuth();
     const [data, setData] = useState({});
 
-    const [regionVisibility, setRegionVisibility] = useState(
-        Object.keys(data).reduce((acc, region) => ({ ...acc, [region]: true }), {})
-    );
-
-    const regionRefs = useRef(Object.keys(data).reduce((acc, region) => ({ ...acc, [region]: React.createRef() }), {}));
-
-    const toggleRegion = region => {
-        setRegionVisibility(prev => ({
-            ...prev,
-            [region]: !prev[region],
-        }));
-    };
-
-    const scrollToRegion = region => {
-        regionRefs.current[region]?.current.scrollIntoView({ behavior: 'smooth' });
+    const regionFlags = {
+        eu: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/255px-Flag_of_Europe.svg.png',
+        us: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/1235px-Flag_of_the_United_States.svg.png',
+        au: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/2560px-Flag_of_Australia.svg.png',
+        uk: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/1200px-Flag_of_the_United_Kingdom_%281-2%29.svg.png',
     };
 
     const getOdds = async () => {
@@ -43,53 +33,56 @@ function Home() {
         getOdds();
     }, []);
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
-
     return (
-        <div className='min-h-screen flex bg-gray-50 dark:bg-gray-900'>
+        <div className='flex min-h-screen'>
             {/* Sidebar */}
-            <aside className='w-1/4 bg-gray-200 dark:bg-gray-800 p-6 sticky top-0 h-screen overflow-auto'>
-                <h2 className='text-xl font-bold text-gray-800 dark:text-gray-100 mb-4'>Regions</h2>
-                <ul className='space-y-2'>
-                    {Object.keys(data).map(region => (
-                        <li key={region}>
-                            <button
-                                onClick={() => scrollToRegion(region)}
-                                className='text-left w-full text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition'
-                            >
-                                {region.toUpperCase()}
-                            </button>
+            <div className='w-1/4 bg-gray-200 dark:bg-gray-800 p-4 overflow-y-auto h-screen top-0 sticky py-6'>
+                <ul>
+                    {Object.entries(data).map(([region, array]) => (
+                        <li key={region} className='mb-8'>
+                            <a href={`#${region}`}>
+                                <div className='border-b dark:border-gray-700 mb-2 flex justify-between'>
+                                    <h3 className='text-lg font-bold text-blue-600 dark:text-blue-400'>
+                                        {region.toUpperCase()}
+                                    </h3>
+                                    <img src={regionFlags[region]} className='inline-block h-5 ml-4' />
+                                </div>
+                            </a>
+                            <ul>
+                                {array.map((item, index) => (
+                                    <li key={index} className='text-gray-700 dark:text-gray-300 hover:text-blue-500'>
+                                        <a href={'#' + region + '_' + item.home_team + '_' + item.away_team}>
+                                            {item.sport_title} - {item.home_team} VS {item.away_team}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
                         </li>
                     ))}
                 </ul>
-            </aside>
+            </div>
 
             {/* Main Content */}
-            <main className='w-3/4 p-6 container mx-auto'>
-                {Object.entries(data).map(([region, array]) => (
-                    <div key={region} ref={regionRefs.current[region]} className='mb-8'>
-                        {/* Region Header */}
-                        <button
-                            onClick={() => toggleRegion(region)}
-                            className='w-full text-left text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4 border-b border-gray-300 dark:border-gray-700 pb-2 flex justify-between items-center'
-                        >
-                            {region.toUpperCase()}
-                            <span
-                                className={`transform transition-transform ${
-                                    regionVisibility[region] ? 'rotate-90' : 'rotate-0'
-                                }`}
-                            >
-                                →
-                            </span>
-                        </button>
+            <div className='w-3/4 px-16 py-4'>
+                <div className='container mx-auto'>
+                    {Object.entries(data).map(([region, array]) => (
+                        <div key={region} className='mb-8'>
+                            {/* Region Heading */}
+                            <div id={region} className='border-b dark:border-gray-700 mb-6 flex justify-between py-2'>
+                                    <h3 className='text-2xl font-bold text-blue-600 dark:text-blue-400'>
+                                        {region.toUpperCase()}
+                                    </h3>
+                                    <img src={regionFlags[region]} className='inline-block h-7 ml-4' />
+                            </div>
 
-                        {/* Region Content */}
-                        {regionVisibility[region] && (
+                            {/* Region Content */}
                             <ul className='space-y-6'>
                                 {array.map((item, index) => (
-                                    <li key={index} className='p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md'>
+                                    <li
+                                        key={index}
+                                        id={region + '_' + item.home_team + '_' + item.away_team}
+                                        className='p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md'
+                                    >
                                         {/* Sport and Teams */}
                                         <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2'>
                                             {item.sport_title} - {item.home_team}{' '}
@@ -111,7 +104,7 @@ function Home() {
                                                     </h4>
 
                                                     {/* Markets and Outcomes */}
-                                                    <ul className='space-y-2 mt-2'>
+                                                    <ul className='space-y-2'>
                                                         {bookmaker.markets.map((market, marketIndex) => (
                                                             <div
                                                                 key={marketIndex}
@@ -142,10 +135,10 @@ function Home() {
                                     </li>
                                 ))}
                             </ul>
-                        )}
-                    </div>
-                ))}
-            </main>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }

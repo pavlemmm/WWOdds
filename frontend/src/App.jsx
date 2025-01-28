@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import ProtectedRoute from './utils/ProtectedRoute.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Layout from './utils/Layout.jsx';
+import Admin from './pages/Admin.jsx';
 
 function App() {
     return (
@@ -18,6 +19,14 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <Home />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path='/admin'
+                            element={
+                                <ProtectedRoute admin>
+                                    <Admin />
                                 </ProtectedRoute>
                             }
                         />

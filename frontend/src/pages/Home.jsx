@@ -5,14 +5,16 @@ import Sidebar from '../components/Sidebar';
 import { regionNames, regionFlags } from '../utils/Regions';
 
 function Home() {
-    const { user } = useAuth();
     const [data, setData] = useState({});
+
+    const { state: authState } = useAuth();
+    const { token, user } = authState;
 
     const getOdds = async () => {
         try {
             const response = await fetch(import.meta.env.VITE_API_URL + '/info', {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json', Authorization: user },
+                headers: { 'Content-Type': 'application/json', Authorization: token },
             });
 
             if (!response.ok) {
@@ -45,7 +47,7 @@ function Home() {
             <Sidebar data={data} />
 
             {/* Main Content */}
-            <div className='w-3/4 max-md:w-full max-sm:px-5 px-16 py-4'>
+            <div className='lg:w-3/4 md:w-3/5 w-full px-5 xl:px-16 py-4'>
                 {Object.entries(data).map(([region, array]) => (
                     <div key={region} className='mb-8'>
                         {/* Region Heading */}

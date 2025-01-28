@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema<IUser>({
     enum: Object.values(Region),
     default: [],
   },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  }
 });
 
 

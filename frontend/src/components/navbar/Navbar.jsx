@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 function Navbar() {
-    const { user, dispatch } = useAuth();
+    const { state: authState, dispatch } = useAuth();
+    const { token, user } = authState;
 
     const logOut = () => {
         dispatch({ type: 'LOGOUT' });
-    }
+    };
 
     return (
         <nav className='shadow-xl border-b border-gray-700 bg-gray-800'>

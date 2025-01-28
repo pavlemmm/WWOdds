@@ -22,7 +22,7 @@ const checkRegions = (regions: Region[]) => {
     return regions.every(region => validRegions.includes(region));
 };
 
-const signJWT = (user: IUser) => jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '14d' });
+const signJWT = (user: IUser) => jwt.sign({ id: user._id, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: '14d' });
 
 export const login = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;

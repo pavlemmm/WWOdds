@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import authRoutes from './routes/auth.route.ts';
 import infoRoutes from './routes/info.route.ts';
+import usersRoutes from './routes/users.route.ts'
 import { MONGO_URI, PORT } from './utils/const.utility.ts';
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json({ limit: '1mb' })); // 1MB limit for the entire JSON body
 // Routes
 app.use('/auth', authRoutes);
 app.use('/info', infoRoutes);
+app.use('/users', usersRoutes);
 
 try {
     await mongoose.connect(MONGO_URI);

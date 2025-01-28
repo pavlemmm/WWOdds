@@ -1,9 +1,10 @@
 import React from 'react';
 import { regionNames, regionFlags } from '../utils/Regions';
 
-export default function Sidebar({data}) {
+export default function Sidebar({ data }) {
+
     return (
-        <div className='max-md:hidden sticky w-1/4 top-0 h-screen scrollbar-thin overflow-y-auto border-r border-gray-700 px-4 py-6 mt-4'>
+        <div className='hidden md:block sticky w-2/5 lg:w-1/4 top-0 h-screen scrollbar-thin overflow-y-auto border-r border-gray-700 px-4 py-6 mt-4'>
             <ul>
                 {Object.entries(data).map(([region, array]) => (
                     <li key={region} className='mb-8'>

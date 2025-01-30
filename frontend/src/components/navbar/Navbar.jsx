@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 
 function Navbar() {
     const { state: authState, dispatch } = useAuth();
-    const { token, user } = authState;
+    const { user } = authState;
 
     const logOut = () => {
         dispatch({ type: 'LOGOUT' });
@@ -23,6 +23,11 @@ function Navbar() {
                             <Link to='/'>
                                 <NavLink>Home</NavLink>
                             </Link>
+                            {user.isAdmin && (
+                                <Link to='/admin'>
+                                    <NavLink>Admin</NavLink>
+                                </Link>
+                            )}
                             <button onClick={logOut}>
                                 <NavLink>Log out</NavLink>
                             </button>

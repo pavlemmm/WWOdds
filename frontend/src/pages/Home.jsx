@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import ScrollToTop from '../components/ScrollToTop';
 import Sidebar from '../components/Sidebar';
+import { Spinner } from '../components/Spinner';
 import { regionNames, regionFlags } from '../utils/Regions';
 
 function Home() {
     const [data, setData] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     const { state: authState } = useAuth();
     const { token, user } = authState;
@@ -25,6 +27,7 @@ function Home() {
         } catch (err) {
             console.log(err);
         }
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -38,9 +41,9 @@ function Home() {
         return () => clearInterval(interval); // Cleanup interval on unmount
     }, []);
 
-    // useEffect(() => {
-    //     console.log(data);
-    // }, [data]);
+    if (isLoading) {
+        return <div className='absolute inset-0 flex justify-center items-center'><Spinner/></div>;
+    }
 
     return (
         <div className='flex min-h-screen'>

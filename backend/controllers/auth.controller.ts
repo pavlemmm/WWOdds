@@ -53,10 +53,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const register = async (req: Request, res: Response): Promise<void> => {
-    const { firstName, lastName, email, password: passwordRaw, regions } = req.body;
+    const { firstName, lastName, email, password, regions } = req.body;
 
     // Validate email and password
-    if (!checkEmail(email) || !checkPassword(passwordRaw) || !checkName(firstName) || !checkName(lastName) || !checkRegions(regions)) {
+    if (!checkEmail(email) || !checkPassword(password) || !checkName(firstName) || !checkName(lastName) || !checkRegions(regions)) {
         res.status(400).send('Invalid request');
         return;
     }
@@ -67,9 +67,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         res.status(400).send('User already exists');
         return;
     }
-
-    // Hash the password
-    const password = await bcrypt.hash(passwordRaw, 10);
 
     // Create and save the new user
     const newUser = new User({ firstName, lastName, email, password, regions });

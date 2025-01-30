@@ -4,6 +4,7 @@ import InputText from '../components/form/InputText';
 import ToggleGroup from '../components/form/ToggleGroup';
 import Button from '../components/Button';
 import { useAuth } from '../context/AuthContext';
+import { regionValues } from '../utils/Regions';
 
 function Register() {
     const [firstName, setFirstName] = useState('');
@@ -19,12 +20,6 @@ function Register() {
         setRegions(o => (o.indexOf(region) == -1 ? [...o, region] : o.filter(v => v != region)));
     };
 
-    const regionValues = {
-        eu: 'EU',
-        us: 'US',
-        uk: 'UK',
-        au: 'AU',
-    };
 
     const validateForm = () => {
         const errors = {};
@@ -109,7 +104,7 @@ function Register() {
 
     return (
         <div className='flex-grow flex items-center justify-center'>
-            <form onSubmit={handleRegister} className='w-1/2 max-md:w-full rounded border bg-gray-800 border-gray-700 px-3 pt-7 pb-5 mx-2'>
+            <form onSubmit={handleRegister} className='w-[45rem] rounded border bg-gray-800 border-gray-700 px-3 pt-7 pb-5 mx-[2vw]'>
                 <h2 className='text-xl mb-7 border-b pb-2 border-gray-700'>Register</h2>
                 <div className='flex gap-4'>
                     <div className='flex-1'>
@@ -180,7 +175,7 @@ function Register() {
                 <Link to='/login' className='underline text-blue-400'>
                     Login
                 </Link> now.
-                <Button type='submit' className='block mx-auto'>
+                <Button type='submit' className='block mx-auto mt-2'>
                     Register
                 </Button>
             </form>

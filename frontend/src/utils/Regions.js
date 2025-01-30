@@ -5,6 +5,13 @@ export const regionNames = {
     uk: 'United Kingdom',
 };
 
+export const regionValues = {
+    eu: 'EU',
+    us: 'US',
+    uk: 'UK',
+    au: 'AU',
+};
+
 export const regionFlags = {
     eu: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/255px-Flag_of_Europe.svg.png',
     us: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/1235px-Flag_of_the_United_States.svg.png',

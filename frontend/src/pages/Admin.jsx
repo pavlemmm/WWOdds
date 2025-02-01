@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import Button from '../components/Button';
-import Modal from '../components/form/Modal';
-import InputText from '../components/form/InputText';
-import ToggleGroup from '../components/form/ToggleGroup';
+import Button from '../components/common/Button';
+import Modal from '../components/common/Modal';
+import InputText from '../components/common/InputText';
+import ToggleGroup from '../components/common/ToggleGroup';
 import { regionValues } from '../utils/Regions';
 
 export default function Admin(props) {
@@ -90,13 +90,13 @@ export default function Admin(props) {
                 {users.map(
                     (u, i) =>
                         !u.Admin && (
-                            <div key={i} className='bg-gray-800 rounded-lg shadow-lg border border-gray-700 p-4'>
-                                <h2 className='text-lg font-semibold mb-2 border-b border-gray-700'>
+                            <div key={i} className='dark:bg-gray-800 bg-gray-300 rounded-lg shadow-lg dark:border dark:border-gray-700 p-4'>
+                                <h2 className='text-lg font-semibold mb-2 border-b dark:border-gray-700 border-gray-400'>
                                     {u.firstName} {u.lastName}
                                 </h2>
-                                <p className='text-gray-400'>Email: {u.email}</p>
-                                <p className='text-gray-400'>
-                                    Regions: <span className='text-gray-200 font-medium'>{u.regions.join(', ')}</span>
+                                <p className='dark:text-gray-400'>Email: {u.email}</p>
+                                <p className='dark:text-gray-400'>
+                                    Regions: <span className='dark:text-gray-200 font-medium'>{u.regions.join(', ')}</span>
                                 </p>
                                 <Button style='blue' onClick={() => openEditModal(u)} className='mt-4 mr-2'>
                                     Edit

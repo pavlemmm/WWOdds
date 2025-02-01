@@ -17,8 +17,8 @@
 }
 
 @layer base {
-    html {
-        @apply bg-gray-50 dark:bg-gray-900 text-black dark:text-white scroll-smooth scrollbar-dark scrollbar-thin;
+    body {
+        @apply bg-gray-200 dark:bg-gray-900 text-black dark:text-white scroll-smooth scrollbar-dark scrollbar-thin;
     }
 }
 

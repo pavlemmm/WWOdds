@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import InputText from '../components/form/InputText';
-import Button from '../components/Button';
+import InputText from '../components/common/InputText';
+import Button from '../components/common/Button';
 import { useAuth } from '../context/AuthContext';
 
 function Login() {
@@ -69,7 +69,7 @@ function Login() {
 
     return (
         <div className='flex-grow flex items-center justify-center'>
-            <form onSubmit={handleLogin} className='w-[30rem] rounded border bg-gray-800 border-gray-700 px-3 pt-7 pb-5 mx-[min(3vw,2rem)]'>
+            <form onSubmit={handleLogin} className='w-[30rem] rounded border dark:bg-gray-800 bg-gray-300 border-gray-700 px-3 pt-7 pb-5 mx-[min(3vw,2rem)]'>
                 <h2 className='text-xl mb-7 border-b pb-2 border-gray-700'>Login</h2>
                 <InputText
                     type='email'

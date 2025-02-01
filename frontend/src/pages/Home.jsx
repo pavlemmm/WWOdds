@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import ScrollToTop from '../components/ScrollToTop';
-import Sidebar from '../components/Sidebar';
-import { Spinner } from '../components/Spinner';
-import { regionNames, regionFlags } from '../utils/Regions';
+import ScrollToTop from '../components/common/ScrollToTop';
+import Sidebar from '../components/layout/Sidebar';
+import { Spinner } from '../components/common/Spinner';
+import Matches from '../components/features/Matches';
+import RegionHeading from '../components/features/RegionHeading';
 
 function Home() {
     const [data, setData] = useState({});
@@ -41,8 +42,14 @@ function Home() {
         return () => clearInterval(interval); // Cleanup interval on unmount
     }, []);
 
+    // useEffect(() => console.log(data), [data]);
+
     if (isLoading) {
-        return <div className='absolute inset-0 flex justify-center items-center'><Spinner/></div>;
+        return (
+            <div className='absolute inset-0 flex justify-center items-center'>
+                <Spinner />
+            </div>
+        );
     }
 
     return (
@@ -54,73 +61,9 @@ function Home() {
                 {Object.entries(data).map(([region, array]) => (
                     <div key={region} className='mb-8'>
                         {/* Region Heading */}
-                        <div id={region} className='border-b dark:border-gray-700 mb-6 flex justify-between py-2'>
-                            <h3 className='text-2xl font-bold text-blue-600 dark:text-blue-400'>
-                                {regionNames[region]}
-                            </h3>
-                            <img src={regionFlags[region]} className='inline-block h-7 ml-4' />
-                        </div>
+                        <RegionHeading region={region} />
 
-                        {/* Region Content */}
-                        <ul className='space-y-6'>
-                            {array.map((item, index) => (
-                                <li
-                                    key={index}
-                                    id={region + '_' + item.home_team + '_' + item.away_team}
-                                    className='p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md'
-                                >
-                                    {/* Sport and Teams */}
-                                    <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2'>
-                                        {item.sport_title} - {item.home_team}{' '}
-                                        <span className='font-bold text-red-500'>VS</span> {item.away_team}
-                                    </h3>
-
-                                    {/* Bookmakers Section */}
-                                    <h4 className='text-md font-bold text-gray-700 dark:text-gray-300 mb-3'>
-                                        Bookmakers:
-                                    </h4>
-                                    <ul className='space-y-4'>
-                                        {item.bookmakers.map((bookmaker, bookmakerIndex) => (
-                                            <li
-                                                key={bookmakerIndex}
-                                                className='p-3 bg-gray-100 dark:bg-gray-700 rounded-md'
-                                            >
-                                                <h4 className='text-md font-semibold text-gray-900 dark:text-gray-100 mb-2'>
-                                                    {bookmaker.title}
-                                                </h4>
-
-                                                {/* Markets and Outcomes */}
-                                                <ul className='space-y-2'>
-                                                    {bookmaker.markets.map((market, marketIndex) => (
-                                                        <div
-                                                            key={marketIndex}
-                                                            className='border-l-4 border-blue-500 dark:border-blue-400 pl-3'
-                                                        >
-                                                            <h5 className='text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'>
-                                                                {market.name}
-                                                            </h5>
-                                                            <ul className='pl-4 list-disc'>
-                                                                {market.outcomes.map((outcome, outcomeIndex) => (
-                                                                    <li
-                                                                        key={outcomeIndex}
-                                                                        className='text-sm text-gray-600 dark:text-gray-400'
-                                                                    >
-                                                                        {outcome.name} -{' '}
-                                                                        <span className='font-bold text-green-500 dark:text-green-400'>
-                                                                            {outcome.price}
-                                                                        </span>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                    ))}
-                                                </ul>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </li>
-                            ))}
-                        </ul>
+                        <Matches region={region} data={array} />
                     </div>
                 ))}
             </div>

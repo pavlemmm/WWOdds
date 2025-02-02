@@ -33,7 +33,7 @@ function App() {
                         <Route
                             path='/register'
                             element={
-                                <ProtectedRoute guestOnly>
+                                <ProtectedRoute guest>
                                     <Register />
                                 </ProtectedRoute>
                             }
@@ -41,7 +41,7 @@ function App() {
                         <Route
                             path='/login'
                             element={
-                                <ProtectedRoute guestOnly>
+                                <ProtectedRoute guest>
                                     <Login />
                                 </ProtectedRoute>
                             }

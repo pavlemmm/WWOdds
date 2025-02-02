@@ -3,22 +3,26 @@
 @tailwind utilities;
 
 @layer utilities {
-  .scrollbar-none {
-    scrollbar-width: none;
-  }
+    .scrollbar-none {
+        scrollbar-width: none;
+    }
 
-  .scrollbar-thin {
-    scrollbar-width: thin;
-  }
+    .scrollbar-thin {
+        scrollbar-width: thin;
+    }
 
-  .scrollbar-dark {
-    scrollbar-color: #3b82f6 transparent;
-  }
+    .scrollbar-dark {
+        scrollbar-color: #3b82f6 transparent;
+    }
 }
 
 @layer base {
     body {
-        @apply bg-gray-200 dark:bg-gray-900 text-black dark:text-white scroll-smooth scrollbar-dark scrollbar-thin;
+        @apply bg-gray-200 dark:bg-gray-900 text-black dark:text-white scroll-smooth;
+    }
+
+    html {
+        @apply scrollbar-dark scrollbar-thin;
     }
 }
 

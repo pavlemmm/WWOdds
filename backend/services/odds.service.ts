@@ -9,6 +9,6 @@ const data: Record<Region, RegionOdds> = {
     [Region.AUSTRALIA]: new RegionOdds(Region.AUSTRALIA),
 };
 
-export const getOdds = (region: Region) : Promise<OddsData> => {
+export const getData = (region: Region) : Promise<OddsData> => {
     return data[region].getRegionOdds()
 }

@@ -15,7 +15,7 @@ function Home() {
 
     const getOdds = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_API_URL + '/info', {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/odds', {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization: token },
             });

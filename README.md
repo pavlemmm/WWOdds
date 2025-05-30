@@ -65,6 +65,11 @@ JWT_SECRET=your_jwt_secret
 ODDS_API_KEY=your_oddsapi_key
 ```
 
+> 🔐 Set up a `.env` file in the /frontend with the following content:
+```
+VITE_API_URL=your_api_url
+```
+
 ---
 
 ## 🌐 API Endpoints (Backend)

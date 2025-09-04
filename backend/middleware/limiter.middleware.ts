@@ -1,9 +1,9 @@
 import rateLimit from 'express-rate-limit';
 
 export const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // limit each IP to 5 requests per windowMs
-    message: 'Too many attempts from this IP, please try again after 15 minutes',
+    windowMs: 10 * 60 * 1000, // 10 min
+    max: 5, // limit each IP to 5 requests
+    message: 'Too many attempts from this IP, please try again after 10 minutes',
 });
 
 export const registerLimiter = rateLimit({

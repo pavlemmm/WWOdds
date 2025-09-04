@@ -1,6 +1,6 @@
 import express from 'express';
-import { authJWT } from '../middleware/auth.middleware.ts';
-import { getOdds } from '../controllers/odds.controller.ts';
+import { authJWT } from '../middleware/auth.middleware';
+import { getOdds } from '../controllers/odds.controller';
 
 const router = express.Router();
 

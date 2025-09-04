@@ -8,6 +8,8 @@ import { regionValues } from '../utils/Regions';
 
 export default function Admin(props) {
     const [users, setUsers] = useState([]);
+    const [page, setPage] = useState(1);
+    const [maxPages, setMaxPages] = useState(1);
 
     const [currUser, setCurrUser] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,17 +17,27 @@ export default function Admin(props) {
     const { state: authState } = useAuth();
     const { user, token } = authState;
 
-    const fetchUsers = async () => {
+    const fetchUsers = async opts => {
         try {
-            const res = await fetch(import.meta.env.VITE_API_URL + '/users', {
-                headers: { 'Content-Type': 'application/json', Authorization: token },
-            });
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/users?page=${opts.page}&limit=${opts.limit || 4}`,
+                {
+                    headers: { 'Content-Type': 'application/json', Authorization: token },
+                }
+            );
 
             if (!res.ok) {
                 throw new Error(await res.text());
             }
 
-            setUsers(await res.json());
+            const data = await res.json();
+
+            console.log(data);
+
+            setPage(data.page);
+            setMaxPages(data.pages);
+
+            setUsers(data.items);
         } catch (err) {
             console.log(err);
         }
@@ -66,7 +78,7 @@ export default function Admin(props) {
 
             console.log(await res.json());
 
-            fetchUsers();
+            fetchUsers({ page });
         } catch (err) {
             console.log(err);
         }
@@ -78,8 +90,11 @@ export default function Admin(props) {
     };
 
     useEffect(() => {
-        fetchUsers();
+        fetchUsers({ page: page });
     }, []);
+
+    const goPrev = () => page > 1 && fetchUsers({ page: page - 1 });
+    const goNext = () => page < maxPages && fetchUsers({ page: page + 1 });
 
     return (
         <div className='container mx-auto px-2'>
@@ -90,13 +105,17 @@ export default function Admin(props) {
                 {users.map(
                     (u, i) =>
                         !u.Admin && (
-                            <div key={i} className='dark:bg-gray-800 bg-gray-300 rounded-lg shadow-lg dark:border dark:border-gray-700 p-4'>
+                            <div
+                                key={i}
+                                className='dark:bg-gray-800 bg-gray-300 rounded-lg shadow-lg dark:border dark:border-gray-700 p-4'
+                            >
                                 <h2 className='text-lg font-semibold mb-2 border-b dark:border-gray-700 border-gray-400'>
                                     {u.firstName} {u.lastName}
                                 </h2>
                                 <p className='dark:text-gray-400'>Email: {u.email}</p>
                                 <p className='dark:text-gray-400'>
-                                    Regions: <span className='dark:text-gray-200 font-medium'>{u.regions.join(', ')}</span>
+                                    Regions:{' '}
+                                    <span className='dark:text-gray-200 font-medium'>{u.regions.join(', ')}</span>
                                 </p>
                                 <Button style='blue' onClick={() => openEditModal(u)} className='mt-4 mr-2'>
                                     Edit
@@ -107,6 +126,17 @@ export default function Admin(props) {
                             </div>
                         )
                 )}
+            </div>
+            <div>
+                <Button onClick={goPrev} className='mt-4 mr-2'>
+                    &lt;
+                </Button>
+                <p className='dark:text-gray-400 inline-block'>
+                    {page} / {maxPages}
+                </p>
+                <Button onClick={goNext} className='ml-2'>
+                    &gt;
+                </Button>
             </div>
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <EditUserForm user={currUser} close={() => setIsModalOpen(false)} patchUser={patchUser} />
@@ -146,10 +176,10 @@ function EditUserForm({ user, close, patchUser }) {
         if (formData.password) body.password = formData.password;
         if (user.regions.toString() !== formData.regions.toString()) body.regions = formData.regions;
 
-        if(Object.keys(body).length === 0) return
+        if (Object.keys(body).length === 0) return;
 
         patchUser(user, body);
-        close()
+        close();
     };
 
     return (

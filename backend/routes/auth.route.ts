@@ -1,15 +1,15 @@
 import express from 'express';
-import { login, register } from '../controllers/auth.controller.ts'
-import { loginLimiter, registerLimiter } from '../middleware/limiter.middleware.ts';
+import { register, login } from '../controllers/auth.controller';
+import { registerLimiter, loginLimiter } from '../middleware/limiter.middleware';
+import { runValidation } from '../validators/runner.validators';
+import { registerRules, loginRules } from '../validators/auth.validators';
 
 const router = express.Router();
 
-// auth/login/
-// router.post('/login', loginLimiter, login);
-router.post('/login', login);
+// auth/register
+router.post('/register', registerLimiter, registerRules, runValidation, register);
 
-// auth/register/
-// router.post('/register', registerLimiter, register);
-router.post('/register', register);
+// auth/login
+router.post('/login', loginLimiter, loginRules, runValidation, login);
 
 export default router;

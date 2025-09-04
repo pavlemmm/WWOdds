@@ -1,5 +1,5 @@
 import { Document } from "mongoose";
-import { Region } from "./regions.type.ts";
+import { Region } from "./regions.type";
 
 export interface IUser extends Document {
   firstName: string;

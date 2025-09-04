@@ -1,23 +1,21 @@
 import { Request, Response } from 'express';
-import User from '../models/user.model.ts';
-import { IUser } from '../types/user.type.ts';
+import User from '../models/user.model';
+import { IUser } from '../types/user.type';
 
 export const getUsers = async (req: Request, res: Response) => {
-    if (!req.user?.isAdmin) {
-        res.status(401).send('User is not admin');
-        return;
-    }
+  const page  = Math.max(1, parseInt(String(req.query.page || '1')));
+  const limit = Math.min(100, parseInt(String(req.query.limit || '10')));
+  const sort  = String(req.query.sort || '-createdAt');
 
-    const users: IUser[] | null = await User.find();
-    res.json(users);
+  const [items, total] = await Promise.all([
+    User.find().sort(sort).skip((page - 1) * limit).limit(limit),
+    User.countDocuments()
+  ]);
+
+  res.json({ items, total, page, pages: Math.ceil(total / limit), limit });
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
-    if (!req.user?.isAdmin) {
-        res.status(401).send('User is not admin');
-        return;
-    }
-
     const deletedUser = await User.deleteOne({ _id: req.params.id });
 
     if (!deletedUser) {
@@ -29,15 +27,11 @@ export const deleteUser = async (req: Request, res: Response) => {
 };
 
 export const patchUser = async (req: Request, res: Response) => {
-    if (!req.user?.isAdmin) {
-        res.status(401).send('User is not admin');
-        return;
-    }
-
     const user = await User.findById(req.params.id);
 
     if (!user) {
-        return res.status(404).send('User not found');
+        res.status(404).send('User not found');
+        return 
     }
 
     if (req.body.firstName) user.firstName = req.body.firstName;

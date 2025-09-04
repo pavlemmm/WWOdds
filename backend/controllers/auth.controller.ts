@@ -1,78 +1,49 @@
+import type { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../models/user.model.ts';
 import bcrypt from 'bcryptjs';
-import { Request, Response } from 'express';
-import { JWT_SECRET } from '../utils/const.utility.ts';
-import { IUser } from '../types/user.type.ts';
-import { Region } from '../types/regions.type.ts';
+import User from '../models/user.model';
+import { JWT_SECRET } from '../utils/const.utility';
+import { IUser } from '../types/user.type';
 
-// Name regex
-const checkName = (name: string) => name && /^\p{L}{3,40}$/u.test(name);
+const signJWT = (u: IUser) => jwt.sign({ id: u._id, isAdmin: u.isAdmin }, JWT_SECRET, { expiresIn: '14d' });
 
-// Email regex, false if undefined
-const checkEmail = (email: string) => email && /^[\w\.]{1,40}@\w{1,15}\.\w{2,4}$/.test(email);
-
-// Password regex (characters, numbers and symbols), false if undefined
-const checkPassword = (password: string) =>
-    password && /^[\w!@#$%^&*()+={}\[\]:;"'<>,.?/\\|`~^-]{8,60}$/.test(password);
-
-// Check if regions is array of regions type
-const checkRegions = (regions: Region[]) => {
-    const validRegions = Object.values(Region);
-    return regions.every(region => validRegions.includes(region));
-};
-
-const signJWT = (user: IUser) => jwt.sign({ id: user._id, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: '14d' });
-
-export const login = async (req: Request, res: Response): Promise<void> => {
-    const { email, password } = req.body;
-
-    // Validate email and password
-    if (!checkEmail(email) || !checkPassword(password)) {
-        res.status(400).send('Invalid request');
-        return;
-    }
-
-    // Check if the user exists
-    const user: IUser | null = await User.findOne({ email });
-    if (!user) {
-        res.status(404).send('User with this email doesn\'t exist');
-        return;
-    }
-
-    // Validate the password
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-        res.status(400).send('Invalid credentials');
-        return;
-    }
-
-    // Generate and return the token
-    const token = signJWT(user);
-    res.status(200).json({ token });
-};
-
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const register: RequestHandler = async (req, res, next) => {
     const { firstName, lastName, email, password, regions } = req.body;
 
-    // Validate email and password
-    if (!checkEmail(email) || !checkPassword(password) || !checkName(firstName) || !checkName(lastName) || !checkRegions(regions)) {
-        res.status(400).send('Invalid request');
+    const exists = await User.findOne({ email: String(email).toLowerCase() });
+    if (exists) {
+        res.status(409).send('User already exists');
         return;
     }
 
-    // Check if the user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-        res.status(400).send('User already exists');
-        return;
-    }
+    const user = new User({
+        firstName: String(firstName).trim(),
+        lastName: String(lastName).trim(),
+        email: String(email).toLowerCase(),
+        password,
+        regions,
+    });
+    await user.save();
 
-    // Create and save the new user
-    const newUser = new User({ firstName, lastName, email, password, regions });
-    await newUser.save();
-
-    // Generate and return the token
-    const token = signJWT(newUser);
+    const token = signJWT(user);
     res.status(201).json({ token });
+};
+
+export const login: RequestHandler = async (req, res, next) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email: String(email).toLowerCase() });
+    if (!user) {
+        res.status(401).send('Invalid email or password');
+        return;
+    }
+
+    const ok = await bcrypt.compare(String(password), user.password);
+    if (!ok) {
+        res.status(401).send('Invalid email or password');
+        return;
+    }
+
+    const token = signJWT(user);
+    res.json({ token });
 };

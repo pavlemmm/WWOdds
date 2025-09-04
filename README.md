@@ -63,6 +63,7 @@ PORT=5000
 MONGO_URI=your_mongo_connection_string
 JWT_SECRET=your_jwt_secret
 ODDS_API_KEY=your_oddsapi_key
+CORS_ORIGIN=your_cors_origin
 ```
 
 > 🔐 Set up a `.env` file in the /frontend with the following content:
@@ -79,7 +80,7 @@ VITE_API_URL=your_api_url
 | `POST` | `/api/auth/register` | Register a new user |
 | `POST` | `/api/auth/login` | Log in a user |
 | `GET`  | `/api/odds` | Fetch sports odds from OddsAPI |
-| `GET`  | `/api/users` | Get all users (admin only) |
+| `GET`  | `/api/users?page=1&limit=5` | Get users (admin only) |
 | `DELETE` | `/api/users/:id` | Delete a user |
 | `PUT` | `/api/users/:id` | Update a user |
 
@@ -140,7 +141,6 @@ The system uses **JWT (JSON Web Token)** for user authentication and authorizati
 
 ## 📎 Links
 
-- 📂 [GitHub Repository](https://github.com/pavlemmm/WWOdds)
 - 🧠 [OddsAPI](https://the-odds-api.com/)
 
 ---

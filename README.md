@@ -1,7 +1,5 @@
 # WWOdds – Sports Odds Viewer
 
-## Project Description
-
 **WWOdds** is a web application that allows users to view live sports betting odds for events worldwide. Odds are fetched from the **OddsAPI** service. The app features user registration and login, while administrators can manage users (delete and update them).
 
 ## ⚙️ Technologies
@@ -136,12 +134,6 @@ The system uses **JWT (JSON Web Token)** for user authentication and authorizati
 - Register or log in a user
 - View sports odds
 - Log in as an admin to delete or update users
-
----
-
-## Links
-
-- 🧠 [OddsAPI](https://the-odds-api.com/)
 
 ---
 
